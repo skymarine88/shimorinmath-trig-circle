@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">SHIMORINMATH master mark</title>
+  <desc id="desc">Geometric Cyrillic letter Ш above a horizontal exclamation mark with its dot on the left.</desc>
+  <g fill="#111827">
+    <path d="M45 32H73V144H114V32H142V144H183V32H211V172H45Z"/>
+    <circle cx="61" cy="208" r="16"/>
+    <path d="M94 192H211V224H94Z"/>
+  </g>
+</svg>
