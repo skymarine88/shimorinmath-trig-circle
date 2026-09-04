@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111F">
+  <meta name="description" content="Интерактивный тренажёр Шиморина Б.В.: числовая окружность, наборы точек и общие формулы.">
+  <title>Числовая окружность — Шиморин Б.В.</title>
+  <link rel="stylesheet" href="./styles.css?v=6">
+</head>
+<body>
+  <header class="topbar">
+    <!-- Электронный фирменный блок: логотип + полное русское имя; латиница только в подвале. -->
+    <div class="brand" aria-label="Шиморин Б.В. методические разработки">
+      <span class="brand-mark" aria-hidden="true">
+        <img class="logo-turn" src="./assets/SHIMORINMATH_Logo_Master.svg?v=4" alt="">
+      </span>
+      <span class="brand-copy" aria-hidden="true">
+        <span class="author-name">Шиморин Б.В.</span>
+        <span class="product-name">методические разработки</span>
+      </span>
+    </div>
+    <span class="level-badge">10 класс</span>
+  </header>
+
+  <main class="app-shell">
+    <nav class="mode-tabs" aria-label="Разделы тренажёра">
+      <button class="mode-tab is-active" type="button" data-mode="points">
+        <span class="tab-number">01</span>
+        По формуле
+      </button>
+      <button class="mode-tab" type="button" data-mode="formula">
+        <span class="tab-number">02</span>
+        По точкам
+      </button>
+      <button class="mode-tab" type="button" data-mode="combine">
+        <span class="tab-number">03</span>
+        Объединение
+      </button>
+    </nav>
+
+    <section class="progress-panel" aria-label="Прогресс">
+      <div class="progress-heading">
+        <div class="progress-copy">
+          <span id="modeLabel">По формуле</span>
+          <span id="progressText">Задание 1 из 12</span>
+        </div>
+        <div class="progress-counts" aria-label="Результаты раздела">
+          <span class="progress-count is-correct">Верно: <strong id="correctCount">0</strong></span>
+          <span class="progress-count is-incorrect">Ошибок: <strong id="incorrectCount">0</strong></span>
+          <span class="progress-count is-active">В работе: <strong id="activeCount">0</strong></span>
+          <span class="progress-count is-idle">Не начато: <strong id="idleCount">12</strong></span>
+        </div>
+      </div>
+      <nav id="taskStatusList" class="task-status-list" aria-label="Переход между заданиями раздела"></nav>
+    </section>
+
+    <section class="workspace">
+      <article class="circle-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Рабочая область</p>
+            <h1 id="circleTitle">Отметьте все точки</h1>
+          </div>
+          <span id="selectionCount" class="selection-count">Выбрано: 0</span>
+        </div>
+
+        <div id="circleStage" class="circle-stage" aria-live="polite">
+          <svg class="circle-drawing" viewBox="0 0 520 520" aria-hidden="true">
+            <defs>
+              <marker id="axisArrow" markerWidth="8" markerHeight="8" refX="6.4" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#748196"></path>
+              </marker>
+            </defs>
+            <line x1="62" y1="260" x2="470" y2="260" class="axis" marker-end="url(#axisArrow)"></line>
+            <line x1="260" y1="458" x2="260" y2="50" class="axis" marker-end="url(#axisArrow)"></line>
+            <circle cx="260" cy="260" r="172" class="unit-circle"></circle>
+            <circle cx="260" cy="260" r="4" class="origin"></circle>
+            <text x="478" y="252" class="axis-label">x</text>
+            <text x="270" y="50" class="axis-label">y</text>
+          </svg>
+          <div id="pointLayer" class="point-layer"></div>
+        </div>
+
+        <div id="circleLegend" class="circle-legend">
+          <span><i class="legend-dot"></i> доступная точка</span>
+          <span><i class="legend-dot selected"></i> выбранная точка</span>
+        </div>
+      </article>
+
+      <article class="task-panel">
+        <div class="task-meta">
+          <span id="taskType" class="task-type">ФОРМУЛА → ТОЧКИ</span>
+          <span id="taskId" class="task-id">1.1</span>
+        </div>
+
+        <div class="task-copy">
+          <h2 id="taskTitle">Отметьте все точки, заданные формулой</h2>
+          <div id="taskPrompt" class="math-prompt" aria-label="Условие задачи"></div>
+          <p id="taskInstruction" class="task-instruction">Выберите точки на окружности и нажмите «Проверить».</p>
+        </div>
+
+        <section id="formulaEditor" class="formula-editor" hidden>
+          <label for="formulaInput">Общая формула</label>
+          <div class="formula-input-wrap">
+            <span aria-hidden="true">t =</span>
+            <input id="formulaInput" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="π/4 + πk/2">
+          </div>
+          <div id="formulaPreview" class="formula-preview" aria-live="polite">
+            <span class="preview-placeholder">Предпросмотр формулы</span>
+          </div>
+
+          <div class="keyboard" aria-label="Экранная математическая клавиатура">
+            <div class="keyboard-row keyboard-row-main">
+              <button type="button" data-key="π">π</button>
+              <button type="button" data-key="k">k</button>
+              <button type="button" data-key="n">n</button>
+              <button type="button" data-key="±">±</button>
+              <button type="button" data-key="(">(</button>
+              <button type="button" data-key=")">)</button>
+              <button type="button" data-key="^">xʸ</button>
+              <button type="button" data-key="/">a⁄b</button>
+            </div>
+            <div class="keyboard-row keyboard-row-patterns">
+              <button type="button" data-key="(-1)^k">(−1)ᵏ</button>
+              <button type="button" data-key="(-1)^(k+1)">(−1)ᵏ⁺¹</button>
+              <button type="button" data-key="πk">πk</button>
+              <button type="button" data-key="2πk">2πk</button>
+            </div>
+            <div class="keyboard-row keyboard-row-numbers">
+              <button type="button" data-key="1">1</button>
+              <button type="button" data-key="2">2</button>
+              <button type="button" data-key="3">3</button>
+              <button type="button" data-key="4">4</button>
+              <button type="button" data-key="5">5</button>
+              <button type="button" data-key="6">6</button>
+              <button type="button" data-key="+">+</button>
+              <button type="button" data-key="-">−</button>
+              <button type="button" data-action="backspace" aria-label="Удалить последний символ">⌫</button>
+            </div>
+          </div>
+        </section>
+
+        <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+
+        <div class="task-actions">
+          <button id="hintButton" class="button button-secondary" type="button">Подсказка</button>
+          <button id="clearButton" class="button button-ghost" type="button">Очистить</button>
+          <button id="checkButton" class="button button-primary" type="button">Проверить</button>
+        </div>
+      </article>
+    </section>
+
+    <p class="footer-note">SHIMORINMATH</p>
+  </main>
+
+  <div id="completionDialog" class="dialog-backdrop" hidden>
+    <section class="completion-card" role="dialog" aria-modal="true" aria-labelledby="completionTitle">
+      <p class="eyebrow">Раздел завершён</p>
+      <h2 id="completionTitle">Все задания выполнены</h2>
+      <p id="completionText"></p>
+      <div class="completion-actions">
+        <button id="repeatButton" class="button button-secondary" type="button">Пройти ещё раз</button>
+        <button id="nextModeButton" class="button button-primary" type="button">Следующий раздел</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="./app.js?v=6"></script>
+</body>
+</html>
